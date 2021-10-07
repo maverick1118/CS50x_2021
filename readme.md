@@ -55,3 +55,5 @@
 - [Problem Set 7: SQL](/pset7)
   - [movies :cinema:](pset7/movies)
   - [fiftyville](pset7/fiftyville)
+
+- [Lab 8: Trivia](/lab8)
