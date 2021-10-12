@@ -1,0 +1,43 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.navbar{
+  position: absolute;
+}
+.nav-list {
+  display: flex;
+  list-style: none;
+}
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  font-family: "Courier New";
+  font-weight: bold;
+  margin: 1.5rem;
+  margin-left: -13rem;
+}
+.nav-list a {
+  text-decoration: none;
+  display: flex;
+  align-content: center;
+  padding: 0.3rem 2rem 0rem 0rem;
+}
+.name {
+  font-size: 1.5rem;
+  margin-right: 38rem;
+}
+.main-section{
+  display: flex;
+  margin-top:4rem;
+  margin-left: 15rem;
+
+}
+.profile-image{
+  margin-left: 8rem;
+}
+.intro{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
