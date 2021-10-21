@@ -57,3 +57,6 @@
   - [fiftyville](pset7/fiftyville)
 
 - [Lab 8: Trivia](/lab8)
+
+-[Problem Set 8: HTML, CSS, JavaScript](/pset8)
+  -[Homepage :home:](pset8/homepage)
