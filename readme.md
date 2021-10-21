@@ -59,4 +59,7 @@
 - [Lab 8: Trivia](/lab8)
 
 - [Problem Set 8: HTML, CSS, JavaScript](/pset8)
-  - [Homepage :home:](pset8/homepage)
+  - [Homepage :house:](pset8/homepage)
+  
+- [Lab 9: Birthdays :birthday:](/lab9)
+  
