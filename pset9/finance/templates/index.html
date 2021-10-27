@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for dict_item in list1 %}
+            <tr>
+                <td>{{dict_item['symbol']}}</td>
+                <td>{{dict_item['name']}}</td>
+                <td>{{dict_item['price']}}</td>
+                <td>{{dict_item['Total_Qty']}}</td>
+                <td>{{dict_item['total']}}</td>
+            </tr>    
+            {% endfor %}
+            <tfoot>
+                <td>CASH</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{cash}}</td>
+            </tfoot>
+        </tbody>
+
+    </table>
+{% endblock main %}
+    

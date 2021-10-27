@@ -1,7 +1,7 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, redirect, render_template, request, abort
+from flask import Flask, redirect, render_template, request, abort, flash
 
 # Configure application
 app = Flask(__name__)
@@ -22,10 +22,11 @@ def index():
             return abort(404, description = 'Name missing')
         day = request.form.get('day')
         if not day:
-            return abort(404, description = 'Day missing')
+            # return abort(404, description = 'Day missing')
+            return flash("Day missing")
         month = request.form.get('month')
         if not month:
-            return abort(404, description = 'Month missing')
+            return flash(abort(404, description = 'Month missing'))
         birthdays = db.execute('INSERT INTO birthdays(name, month, day) values (?, ?, ?)', name, month, day)
         return redirect("/")
 

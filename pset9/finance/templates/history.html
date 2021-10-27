@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+
+{% block title %}
+History
+{% endblock title %}
+
+
+{% block main %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date and Time</th>
+            <th>Type</th>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+        </tr>
+    </thead>
+
+    <tbody> 
+        {% for dict_item in list1 %}
+        <tr>
+            <td>{{dict_item['datetime']}}</td>
+            <td>{{dict_item['type']}}</td>
+            <td>{{dict_item['symbol']}}</td>
+            <td>{{dict_item['name']}}</td>
+            <td>{{dict_item['qty']}}</td>
+            <td>{{dict_item['price']}}</td>
+            {% set total = dict_item['price'] * dict_item["qty"] %}
+            <td>{{ total |round(2, 'floor')}}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+<script>
+    $(function(){
+        $("tbody").each(function(elem,index){
+          var arr = $.makeArray($("tr",this).detach());
+          arr.reverse();
+            $(this).append(arr);
+        });
+    });
+</script>
+</table>
+
+{% endblock main %}
