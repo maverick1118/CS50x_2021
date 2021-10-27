@@ -64,5 +64,5 @@
 - [Lab 9: Birthdays :birthday:](/lab9)
 
 - [Problem Set 9: Finance](/pset9)
-  - [Finance :receipt:](/pset9/finance)
+  - [Finance :money_mouth_face:](/pset9/finance)
   
