@@ -62,4 +62,7 @@
   - [Homepage :house:](pset8/homepage)
   
 - [Lab 9: Birthdays :birthday:](/lab9)
+
+- [Problem Set 9: Finance](/pset9)
+  - [Finance :receipt:](/pset9/finance)
   
