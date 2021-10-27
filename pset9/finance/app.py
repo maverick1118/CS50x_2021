@@ -49,22 +49,24 @@ if not os.environ.get("API_KEY"):
 def index():
     """Show portfolio of stocks"""
     # Retriving data from database
-    info = db.execute("SELECT symbol, sum(qty) as Total_Qty FROM transactions WHERE user_id = ? GROUP BY symbol",session["user_id"])
-    
+    info = db.execute(
+        "SELECT symbol, sum(qty) as Total_Qty FROM transactions WHERE user_id = ? GROUP BY symbol", session["user_id"])
+
     # Removing stocks with total qty of shares 0
-    info = list(filter(lambda e : e['Total_Qty'] != 0,info))
+    info = list(filter(lambda e: e['Total_Qty'] != 0, info))
     grand_total = 0
     # Updating list of dict with latest price and name
     for i in range(len(info)):
         share_info = lookup(info[i]['symbol'])
         info[i]['name'] = share_info['name']
         info[i]["price"] = share_info['price']
-        info[i]["total"] = round(share_info['price'] * info[i]['Total_Qty'],2)  
+        info[i]["total"] = round(share_info['price'] * info[i]['Total_Qty'], 2)
         grand_total = grand_total + info[i]['total']
     # Calculating total cash available in user account
-    cash = float(db.execute("SELECT cash from users where id = ?", session['user_id'])[0]['cash'])
+    cash = float(db.execute("SELECT cash from users where id = ?",
+                 session['user_id'])[0]['cash'])
     grand_total = grand_total + cash
-    return render_template("index.html", list1 = info,cash = cash, grand_total = grand_total)
+    return render_template("index.html", list1=info, cash=cash, grand_total=grand_total)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -78,31 +80,34 @@ def buy():
     # When user clicks buy button
     if request.method == "POST":
         info = lookup(request.form.get("symbol"))
-        
+
         # For invalid symbols
         if info == None:
             flash("Invalid Symbol")
             return render_template("buy.html")
-        
+
         # Current price of stocks
         price = info["price"]
 
         # Finding total value of shares to be bought by user
         qty = int(request.form.get('shares'))
         value = int(price) * qty
-        
+
         # Retriving cash available
         userid = session["user_id"]
-        cash = db.execute("SELECT cash FROM users WHERE id = ?",userid)[0]['cash']
-        
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", userid)[
+            0]['cash']
+
         # Check for insufficient funds
         if value > cash:
             flash("Insufficient funds")
             return render_template("buy.html")
-        
+
         # Purchasing shares
-        db.execute("INSERT INTO transactions(user_id,type,symbol,name,price,qty,datetime) VALUES(?,?,?,?,?,?,datetime('now', 'localtime'))",userid,"buy",info["symbol"],info["name"],price,qty)
-        db.execute("UPDATE users SET cash = ? WHERE id = ?",cash-value,userid)
+        db.execute("INSERT INTO transactions(user_id,type,symbol,name,price,qty,datetime) VALUES(?,?,?,?,?,?,datetime('now', 'localtime'))",
+                   userid, "buy", info["symbol"], info["name"], price, qty)
+        db.execute("UPDATE users SET cash = ? WHERE id = ?",
+                   cash-value, userid)
         flash("Stocks purchased successfully")
         return redirect("/")
 
@@ -114,9 +119,10 @@ def buy():
 def history():
     """Show history of transactions"""
     # Retriving data from database
-    info = db.execute("SELECT * FROM transactions where user_id = ?",session["user_id"])
+    info = db.execute(
+        "SELECT * FROM transactions where user_id = ?", session["user_id"])
 
-    return render_template("history.html", list1 = info)
+    return render_template("history.html", list1=info)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -174,7 +180,7 @@ def quote():
     # Rendering Quote page
     if request.method == "GET":
         return render_template("quote.html")
-    
+
     # When user clicks quote button
     if request.method == "POST":
         info = lookup(request.form.get("symbol"))
@@ -187,7 +193,7 @@ def quote():
         company = info['name']
         symbol = info['symbol']
         price = usd(info['price'])
-        return render_template('quoted.html',company = company, symbol = symbol, price = price)
+        return render_template('quoted.html', company=company, symbol=symbol, price=price)
 
     return apology("Something went wrong", 403)
 
@@ -198,7 +204,7 @@ def register():
     # Rendering Register page
     if request.method == 'GET':
         return render_template("register.html")
-    
+
     # When user click register button
     if request.method == "POST":
         # Checks for valid user inputs
@@ -213,15 +219,16 @@ def register():
             flash('Password is missing')
             return render_template("register.html")
 
-        if request.form.get("password")  != request.form.get("re-password"):
+        if request.form.get("password") != request.form.get("re-password"):
             flash("Password don't match")
             return render_template("register.html")
-        
+
         # Hasing password
         password = generate_password_hash(request.form.get('password'))
 
         # Creating new user in database
-        db.execute("INSERT INTO users(username,hash) values (?,?)", username,password)
+        db.execute("INSERT INTO users(username,hash) values (?,?)",
+                   username, password)
         return render_template('login.html')
 
     return apology("Something went wrong", 403)
@@ -238,33 +245,37 @@ def sell():
     # When user clicks buy button
     if request.method == "POST":
         info = lookup(request.form.get("symbol"))
-        
+
         # For invalid symbols
         if info == None:
             flash("Invalid Symbol")
             return render_template("buy.html")
-        
+
         # Current price of stocks
         cur_price = info["price"]
-              
+
         # Finding total value of shares to be bought by user
         qty = int(request.form.get('shares'))
         value = int(cur_price) * qty
-        
-         # Look for amount of stocks in user account
-        amt_shares_in_database =  db.execute("SELECT sum(qty) as Total_Qty FROM transactions WHERE user_id = ? and symbol = ? GROUP BY symbol",session["user_id"],info['symbol'])[0]['Total_Qty']
-        
+
+        # Look for amount of stocks in user account
+        amt_shares_in_database = db.execute(
+            "SELECT sum(qty) as Total_Qty FROM transactions WHERE user_id = ? and symbol = ? GROUP BY symbol", session["user_id"], info['symbol'])[0]['Total_Qty']
+
         # Check for insufficient shares
         if qty > amt_shares_in_database:
             flash("Insufficient shares")
             return render_template("sell.html")
-        
+
         # Retriving cash available
-        cash = db.execute("SELECT cash FROM users WHERE id = ?",session['user_id'])[0]['cash']
-        
+        cash = db.execute("SELECT cash FROM users WHERE id = ?",
+                          session['user_id'])[0]['cash']
+
         # Updating database after selling shares
-        db.execute("INSERT INTO transactions(user_id,type,symbol,name,price,qty,datetime) VALUES(?,?,?,?,?,?,datetime('now', 'localtime'))",session['user_id'],"sell",info["symbol"],info["name"],cur_price,(-qty))
-        db.execute("UPDATE users SET cash = ? WHERE id = ?",cash+value,session['user_id'])
+        db.execute("INSERT INTO transactions(user_id,type,symbol,name,price,qty,datetime) VALUES(?,?,?,?,?,?,datetime('now', 'localtime'))",
+                   session['user_id'], "sell", info["symbol"], info["name"], cur_price, (-qty))
+        db.execute("UPDATE users SET cash = ? WHERE id = ?",
+                   cash+value, session['user_id'])
         flash("Stocks sold successfully")
         return redirect("/")
     return apology("TODO")
