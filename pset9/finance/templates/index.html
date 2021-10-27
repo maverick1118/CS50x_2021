@@ -21,19 +21,26 @@
         <tbody>
             {% for dict_item in list1 %}
             <tr>
-                <td>{{dict_item['symbol']}}</td>
-                <td>{{dict_item['name']}}</td>
-                <td>{{dict_item['price']}}</td>
-                <td>{{dict_item['Total_Qty']}}</td>
-                <td>{{dict_item['total']}}</td>
+                <td>{{ dict_item['symbol'] }}</td>
+                <td>{{ dict_item['name'] }}</td>
+                <td>{{ dict_item['price'] | usd}}</td>
+                <td>{{ dict_item['Total_Qty'] }}</td>
+                <td>{{ dict_item['total'] | usd }}</td>
             </tr>    
             {% endfor %}
-            <tfoot>
+            <tr>
                 <td>CASH</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{cash}}</td>
+                <td>{{ cash | usd }}</td>
+            </tr>
+            <tfoot>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ grand_total | usd }}</td>
             </tfoot>
         </tbody>
 

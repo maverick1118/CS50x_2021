@@ -23,14 +23,14 @@ History
     <tbody> 
         {% for dict_item in list1 %}
         <tr>
-            <td>{{dict_item['datetime']}}</td>
-            <td>{{dict_item['type']}}</td>
-            <td>{{dict_item['symbol']}}</td>
-            <td>{{dict_item['name']}}</td>
-            <td>{{dict_item['qty']}}</td>
-            <td>{{dict_item['price']}}</td>
+            <td>{{ dict_item['datetime'] }}</td>
+            <td>{{ dict_item['type'] }}</td>
+            <td>{{ dict_item['symbol'] }}</td>
+            <td>{{ dict_item['name'] }}</td>
+            <td>{{ dict_item['qty'] }}</td>
+            <td>{{ dict_item['price'] | usd }}</td>
             {% set total = dict_item['price'] * dict_item["qty"] %}
-            <td>{{ total |round(2, 'floor')}}</td>
+            <td>{{ total |round(2, 'floor') | usd}}</td>
 
         </tr>
         {% endfor %}

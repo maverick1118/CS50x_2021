@@ -53,18 +53,18 @@ def index():
     
     # Removing stocks with total qty of shares 0
     info = list(filter(lambda e : e['Total_Qty'] != 0,info))
-    
+    grand_total = 0
     # Updating list of dict with latest price and name
     for i in range(len(info)):
         share_info = lookup(info[i]['symbol'])
         info[i]['name'] = share_info['name']
         info[i]["price"] = share_info['price']
         info[i]["total"] = round(share_info['price'] * info[i]['Total_Qty'],2)  
-    
+        grand_total = grand_total + info[i]['total']
     # Calculating total cash available in user account
     cash = float(db.execute("SELECT cash from users where id = ?", session['user_id'])[0]['cash'])
-
-    return render_template("index.html", list1 = info,cash = cash)
+    grand_total = grand_total + cash
+    return render_template("index.html", list1 = info,cash = cash, grand_total = grand_total)
 
 
 @app.route("/buy", methods=["GET", "POST"])
